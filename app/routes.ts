@@ -10,5 +10,9 @@ export default [
       route("/:question_id/edit", "features/questions/pages/edit-question-page.tsx"),
       route("/:question_id/delete", "features/questions/pages/delete-question-page.tsx"),
     ]),
+  ]),
+  layout("core/layouts/legal.layout.tsx", [
+    route("/privacy-policy", "features/legal/pages/privacy-policy-page.tsx"),
+    route("/terms-of-service", "features/legal/pages/terms-of-service-page.tsx"),
   ])
 ] satisfies RouteConfig;

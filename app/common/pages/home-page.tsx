@@ -11,10 +11,10 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   return (
     <div className="flex flex-col gap-10 mt-10">
-      <div className="flex flex-col gap-4 min-h-[calc(100vh-10rem)] justify-center items-center ">
+      <div className="flex flex-col gap-4 min-h-[calc(100vh-10rem)] justify-center items-center select-none">
       <AnimatedGridPattern
         numSquares={30}
-        maxOpacity={0.1}
+        maxOpacity={0.2}
         duration={3}
         repeatDelay={1}
         className={cn(
@@ -46,7 +46,10 @@ export default function Home() {
           description="소득세법 제102조 제1항 제1호에 따르면 거주자 판정은 입국 후 184일 이내에 판정해야 한다...."
           badges={[
             { text: "소득세법", variant: "default" },
-            { text: "거주자", variant: "secondary" }
+            { text: "거주자", variant: "secondary" },
+            { text: "법령중심", variant: "secondary" },
+            { text: "판례중심", variant: "secondary" },          
+            { text: "실무사례", variant: "secondary" }
           ]}
         />
         ))}

@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/core/components/ui/avatar
 import { Badge } from "~/core/components/ui/badge";
 import { Button } from "~/core/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/core/components/ui/card";
-import { MessageCircleIcon } from "lucide-react";
+import { EyeIcon, MessageCircleIcon } from "lucide-react";
 
 interface CardComponentProps {
   avatarSrc?: string;
@@ -64,6 +64,11 @@ export function CardComponent({
             <Button variant="outline" size="icon">
               <Link to={messageButtonLink}>
                 <MessageCircleIcon className="w-4 h-4" />
+              </Link>
+            </Button>
+            <Button variant="outline" size="icon">
+              <Link to="/questions/1">
+                <EyeIcon className="w-4 h-4" />
               </Link>
             </Button>
           </div>

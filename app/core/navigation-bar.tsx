@@ -128,24 +128,26 @@ export function NavigationBar({
     return (
       <nav
         className={
-          "mx-auto flex fixed top-0 left-0 right-0 h-16 w-full items-center justify-between border-b px-5 shadow-xs backdrop-blur-lg transition-opacity md:px-10"
+          "mx-auto flex fixed top-0 left-0 right-0 h-16 w-full items-center justify-between border-b px-5 shadow-xs backdrop-blur-lg transition-opacity md:px-10 z-50"
         }
       >
         <div className="mx-auto flex h-full w-full max-w-screen-2xl items-center justify-between py-3">
           {/* Application logo/title with link to home */}
-          <Link to="/">
-            <h1 className="text-lg font-extrabold">{"CTAUNITY | 세무사 커뮤니티"}</h1>
+          <Link to="/" className="flex flex-row items-center gap-4">
+            <h1 className="text-lg font-extrabold">CTAUNITY</h1>
+            <h1 className="text-lg text-muted-foreground">|</h1>
+            <h1 className="text-lg font-extrabold">세무사 커뮤니티</h1> 
           </Link>
           
           {/* Desktop navigation menu (hidden on mobile) */}
           <div className="hidden h-full items-center gap-5 md:flex">
             {/* Main navigation links */}
             <Link
-              to="/blog"
+              to="/questions"
               viewTransition
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
             >
-              Blog
+              Questions
             </Link>
             <Link
               to="/contact"
