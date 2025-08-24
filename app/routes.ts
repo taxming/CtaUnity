@@ -12,7 +12,9 @@ export default [
     ]),
   ]),
   layout("core/layouts/legal.layout.tsx", [
-    route("/privacy-policy", "features/legal/pages/privacy-policy-page.tsx"),
-    route("/terms-of-service", "features/legal/pages/terms-of-service-page.tsx"),
+    ...prefix("legal", [
+      route("/privacy-policy", "features/legal/pages/privacy-policy-page.tsx"),
+      route("/terms-of-service", "features/legal/pages/terms-of-service-page.tsx"),
+    ]),
   ])
 ] satisfies RouteConfig;

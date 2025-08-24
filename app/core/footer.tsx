@@ -36,10 +36,10 @@ export default function Footer() {
         
         {/* Legal links - appears first on mobile, second on desktop */}
         <div className="order-1 flex gap-10 *:underline md:order-none">
-          <Link to="/privacy-policy" viewTransition>
+          <Link to="/legal/privacy-policy" viewTransition>
             개인정보처리방침
           </Link>
-          <Link to="/terms-of-service" viewTransition>
+          <Link to="/legal/terms-of-service" viewTransition>
             이용약관
           </Link>
         </div>

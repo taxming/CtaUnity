@@ -6,6 +6,7 @@ import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger
 import ThemeSwitcher from "./theme-switcher";
 import { Separator } from "~/core/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/core/components/ui/avatar";
+import { useEffect, useState } from "react";
 
 
 function Actions() {
@@ -117,15 +118,26 @@ export function NavigationBar({
     email,
     avatarUrl,
     loading,
+    message,
   }: {
     name?: string;
     email?: string;
     avatarUrl?: string | null;
     loading: boolean;
+    message?: string;
   }) {
     // Get translation function for internationalization
-    
+    const [messageState, setMessageState] = useState<string | null>(null);
+    useEffect(() => {
+      if (message) {
+        setMessageState(message);
+        setTimeout(() => {
+          setMessageState(null);
+        }, 1000);
+      }
+    }, [message]);
     return (
+      <>
       <nav
         className={
           "mx-auto flex fixed top-0 left-0 right-0 h-16 w-full items-center justify-between border-b px-5 shadow-xs backdrop-blur-lg transition-opacity md:px-10 z-50"
@@ -238,6 +250,15 @@ export function NavigationBar({
           </Sheet>
         </div>
       </nav>
+      {messageState && (
+        <div 
+          className="text-red-500 text-center max-w-screen-sm mx-auto fixed top-0 left-0 right-0 z-52 border h-16 flex items-center justify-center"
+          style={{animation: "fadeOut 1s forwards"}}
+        >
+          {messageState}
+        </div>
+      )}
+      </>
     );
   }
   

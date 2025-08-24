@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  Navigate,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -56,6 +57,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
+    if (error.status === 404) {
+      return <Navigate to="/?message=페이지를 찾을 수 없습니다." replace />;
+    }
     details =
       error.status === 404
         ? "The requested page could not be found."
@@ -64,6 +68,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     details = error.message;
     stack = error.stack;
   }
+  
 
   return (
     <main className="pt-16 p-4 container mx-auto">

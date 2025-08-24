@@ -8,9 +8,11 @@ export function meta({}: Route.MetaArgs) {
   return [{ title: "Home" }, { name: "description", content: "Home page" }];
 }
 
-export default function Home() {
+
+export default function Home({loaderData}: Route.ComponentProps) {
   return (
     <div className="flex flex-col gap-10 mt-10">
+    
       <div className="flex flex-col gap-4 min-h-[calc(100vh-10rem)] justify-center items-center select-none">
       <AnimatedGridPattern
         numSquares={30}
