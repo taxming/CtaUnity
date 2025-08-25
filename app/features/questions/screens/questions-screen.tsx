@@ -1,36 +1,61 @@
 import React from 'react';
+import { Link } from 'react-router';
+import { CardComponent } from '~/common/components/card-component';
+import { Button } from '~/core/components/ui/button';
+import { Separator } from '~/core/components/ui/separator';
 
 export default function QuestionsPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">질문 목록</h1>
-      <div className="grid gap-4">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-2">새 질문 작성하기</h2>
-          <p className="text-gray-600 mb-4">질문을 작성하여 커뮤니티와 지식을 공유해보세요.</p>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-            질문 작성
-          </button>
-        </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold mb-3">최근 질문</h3>
-          <div className="space-y-3">
-            <div className="border-b pb-2">
-              <h4 className="font-medium">React에서 상태 관리하는 방법은?</h4>
-              <p className="text-sm text-gray-500">2시간 전 • 5개 답변</p>
-            </div>
-            <div className="border-b pb-2">
-              <h4 className="font-medium">TypeScript 타입 정의 팁</h4>
-              <p className="text-sm text-gray-500">5시간 전 • 3개 답변</p>
-            </div>
-            <div className="border-b pb-2">
-              <h4 className="font-medium">CSS Grid 레이아웃 문제</h4>
-              <p className="text-sm text-gray-500">1일 전 • 7개 답변</p>
-            </div>
-          </div>
-        </div>
+    <div className="flex flex-col gap-4 mt-10">
+
+      <div className="flex flex-col h-40 gap-2 items-center justify-center">
+        <h1 className="text-3xl font-bold">최근 질문</h1>
+        <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
+          최근 질문 목록을 확인해보세요.
+        </span>
       </div>
-    </div>
+
+    <div className="grid grid-cols-6 gap-8">
+        <div className="col-span-4 flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-bold">최근 질문</h1>
+          <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
+            최근 질문 목록을 확인해보세요.
+          </span>
+        </div>
+        {Array.from({ length: 6 }).map((_, index) => ( 
+        <CardComponent
+          title="거주자 판정시 입국 후 184일 이내이더라도 거주자 판정 가능한지?"
+          description="소득세법 제102조 제1항 제1호에 따르면 거주자 판정은 입국 후 184일 이내에 판정해야 한다...."
+          badges={[
+            { text: "소득세법", variant: "default" },
+            { text: "거주자", variant: "secondary" },
+            { text: "법령중심", variant: "secondary" },
+            { text: "판례중심", variant: "secondary" },          
+            { text: "실무사례", variant: "secondary" }
+          ]}
+        />
+        ))}
+        </div>
+
+
+        <aside className="col-span-2">
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
+              <Button variant="outline" className="w-full" asChild>
+                <Link to="/questions/new">새 글 작성</Link>
+              </Button>
+              <Separator className="w-full" />
+            </div>
+            <h1 className="text-3xl font-bold">카테고리 목록</h1>
+            <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
+              카테고리 목록을 확인해보세요.
+            </span>
+          </div>
+          
+        </aside>
+      </div>
+      </div>
+
   );
 }

@@ -1,102 +1,161 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { Badge } from "~/core/components/ui/badge";
+import { Card, CardHeader, CardTitle, CardContent } from "~/core/components/ui/card";
+import { Button } from "~/core/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "~/core/components/ui/avatar";
+import { Alert, AlertTitle, AlertDescription } from "~/core/components/ui/alert";
 
-export default function QuestionScreen() {
-  const { question_id } = useParams();
-  const [answer, setAnswer] = useState('');
 
-  // 실제 구현에서는 API에서 질문 데이터를 가져와야 합니다
-  const question = {
-    id: question_id,
-    title: 'React에서 상태 관리하는 방법은?',
-    content: 'React 프로젝트에서 복잡한 상태를 효율적으로 관리하는 방법에 대해 궁금합니다. Redux, Context API, Zustand 등 여러 옵션이 있는데, 각각의 장단점과 언제 사용해야 하는지 알려주세요.',
-    author: '개발자김',
-    createdAt: '2024-01-15',
-    tags: ['react', 'state-management', 'frontend'],
-    answers: [
-      {
-        id: 1,
-        content: 'Redux는 대규모 애플리케이션에 적합하고, Context API는 간단한 상태 공유에 좋습니다. Zustand는 가볍고 사용하기 쉽습니다.',
-        author: '상태관리전문가',
-        createdAt: '2024-01-15',
-        votes: 5
-      },
-      {
-        id: 2,
-        content: '프로젝트 규모에 따라 선택하세요. 작은 프로젝트는 Context API, 중간은 Zustand, 큰 프로젝트는 Redux를 추천합니다.',
-        author: 'React개발자',
-        createdAt: '2024-01-15',
-        votes: 3
-      }
-    ]
-  };
 
-  const handleSubmitAnswer = (e: React.FormEvent) => {
-    e.preventDefault();
-    // 답변 제출 로직 구현
-    console.log('답변 제출:', answer);
-  };
+export default function QuestionDetailScreen({  }) {
+
+  // features/questions/sample-data.ts
+
+ const question = {
+  id: 1,
+  title: "거주자 판정 시 입국 후 184일 이내라도 거주자로 판정 가능한지?",
+  content: `소득세법 제1조 및 제102조에 따르면 거주자 여부는 국내 체류기간, 
+생활관계, 가족관계 등을 종합적으로 고려해야 합니다. 
+
+단순히 184일을 기준으로만 판단하는 것이 아니라 
+국내에 주소나 거소가 있는 경우에도 거주자로 판정될 수 있다는 점에서 
+실무상 쟁점이 발생합니다.
+
+관련 예규: 서면-2017-소득-1234`,
+  created_at: "2025-08-01T12:00:00Z",
+  updated_at: "2025-08-01T12:00:00Z",
+  author: { id: "u1", name: "이재황", isAnonymous: false },
+  category: "소득세",
+  tags: ["거주자", "소득세법", "판례중심", "실무사례"],
+  attachments: [
+    { name: "관련예규.pdf", url: "/uploads/예규샘플.pdf", mime: "application/pdf", size: 123456 },
+  ],
+  bounty_amount: 100000,
+  status: "open",
+  answers: [
+    {
+      id: "a1",
+      content: `국내 생활관계(가족·직업·자산 등)가 확실하면 184일 전이라도 거주자로 판정된 사례가 많습니다. 
+대법원 판례(2020두12345)도 같은 취지입니다.`,
+      author: { id: "u2", name: "김세무", isAnonymous: false },
+      created_at: "2025-08-02T10:00:00Z",
+      attachments: [],
+      votes: 5,
+      comments: [],
+      isAccepted: false,
+    },
+    {
+      id: "a2",
+      content: `실무에서는 국세청이 184일이라는 수치를 강하게 기준으로 삼지만, 
+주요 생활관계가 국내에 있음을 입증하면 예외적으로 거주자 판정이 가능합니다.`,
+      author: { id: "u3", name: "박세무", isAnonymous: false },
+      created_at: "2025-08-03T09:30:00Z",
+      attachments: [],
+      votes: 2,
+      comments: [],
+      isAccepted: true,
+    },
+  ],
+};
+
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      {/* 질문 헤더 */}
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-4">
-          {question.tags.map((tag) => (
-            <span key={tag} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-              {tag}
-            </span>
-          ))}
-        </div>
-        <h1 className="text-3xl font-bold mb-4">{question.title}</h1>
-        <div className="flex items-center gap-4 text-sm text-gray-500">
-          <span>{question.author}</span>
-          <span>{question.createdAt}</span>
-        </div>
-      </div>
-
-      {/* 질문 내용 */}
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <p className="text-gray-700 leading-relaxed">{question.content}</p>
-      </div>
-
-      {/* 답변 목록 */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-6">답변 ({question.answers.length})</h2>
-        <div className="space-y-6">
-          {question.answers.map((ans) => (
-            <div key={ans.id} className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex items-center gap-4 mb-4">
-                <span className="font-medium">{ans.author}</span>
-                <span className="text-sm text-gray-500">{ans.createdAt}</span>
-                <span className="text-sm text-gray-500">👍 {ans.votes}</span>
-              </div>
-              <p className="text-gray-700 leading-relaxed">{ans.content}</p>
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+      {/* 메인 본문 */}
+      <div className="space-y-6">
+        <Card>
+          <CardHeader className="space-y-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Badge variant="secondary">{question.category}</Badge>
+              {question.tags.map(t => (
+                <Badge key={t} variant="outline">#{t}</Badge>
+              ))}
+              <Badge variant={question.status === "open" ? "default" : "destructive"}>
+                {question.status.toUpperCase()}
+              </Badge>
             </div>
+            <CardTitle className="text-2xl font-bold">{question.title}</CardTitle>
+            <div className="text-sm text-muted-foreground">
+              {question.author.isAnonymous ? "익명" : question.author.name} · {new Date(question.created_at).toLocaleDateString()}
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="prose max-w-none">
+              {/* Markdown 렌더링 */}
+              <p>{question.content}</p>
+            </div>
+
+            {question.attachments.length > 0 && (
+              <div className="mt-4 space-y-2">
+                <h4 className="font-semibold">첨부파일</h4>
+                {question.attachments.map(f => (
+                  <Button key={f.url} asChild variant="outline" size="sm">
+                    <a href={f.url} target="_blank" rel="noopener">{f.name}</a>
+                  </Button>
+                ))}
+              </div>
+            )}
+
+            {question.bounty_amount && (
+              <Alert className="mt-4">
+                <AlertTitle>보상형 질문</AlertTitle>
+                <AlertDescription>
+                  이 질문은 채택 시 <b>{question.bounty_amount.toLocaleString()}원</b>이 지급됩니다.
+                </AlertDescription>
+              </Alert>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* 답변 영역 */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold">답변</h2>
+          <Button>답변 작성하기</Button>
+        </div>
+        <div className="space-y-4">
+          {question.answers.map(ans => (
+            <Card key={ans.id} className={ans.isAccepted ? "border-green-500" : ""}>
+              <CardHeader className="flex items-center gap-3">
+                <Avatar><AvatarImage src="" /><AvatarFallback>{ans.author.name[0]}</AvatarFallback></Avatar>
+                <div>
+                  <div className="font-medium">{ans.author.name}</div>
+                  <div className="text-xs text-muted-foreground">{new Date(ans.created_at).toLocaleDateString()}</div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="prose max-w-none">{ans.content}</div>
+                <div className="flex gap-2 mt-2">
+                  <Button size="sm" variant="outline">👍 {ans.votes}</Button>
+                  {question.status === "open" && (
+                    <Button size="sm" variant={ans.isAccepted ? "default" : "secondary"}>
+                      {ans.isAccepted ? "채택됨" : "채택하기"}
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
 
-      {/* 답변 작성 폼 */}
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4">답변 작성</h3>
-        <form onSubmit={handleSubmitAnswer}>
-          <textarea
-            value={answer}
-            onChange={(e) => setAnswer(e.target.value)}
-            rows={6}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-            placeholder="질문에 대한 답변을 작성해주세요"
-            required
-          />
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md font-medium"
-          >
-            답변 등록
-          </button>
-        </form>
-      </div>
+      {/* 사이드바 */}
+      <aside className="space-y-4">
+        <Card>
+          <CardHeader><CardTitle>질문 요약</CardTitle></CardHeader>
+          <CardContent className="text-sm">
+            · 카테고리: {question.category}<br/>
+            · 태그: {question.tags.join(", ")}<br/>
+            · 상태: {question.status}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader><CardTitle>관련 법령/판례</CardTitle></CardHeader>
+          <CardContent className="text-sm space-y-1">
+            <a href="#">소득세법 제102조</a><br/>
+            <a href="#">대법원 2021두12345</a>
+          </CardContent>
+        </Card>
+      </aside>
     </div>
   );
 }
