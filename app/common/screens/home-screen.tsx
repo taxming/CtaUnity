@@ -37,19 +37,7 @@ export default function Home({loaderData}: Route.ComponentProps) {
         </span>
       </div>
 
-  {/* 빠른 검색(Command) */}
-  <div className="mt-4 w-full max-w-xl">
-        <Command className="rounded-xl border">
-          <CommandInput placeholder="예: 외항운송 영세율 / 상증 판례 2023두XXXX" />
-          <CommandList>
-            <CommandEmpty>검색어를 입력해 보세요.</CommandEmpty>
-            {/* 추천/최근 검색어가 있다면 <CommandItem>으로 바인딩 */}
-            <CommandItem>소득세법 · 거주자 판정</CommandItem>
-            <CommandItem>부가세 · 영세율 적용 요건</CommandItem>
-            <CommandItem>상속증여세 · 특례/판례</CommandItem>
-          </CommandList>
-        </Command>
-      </div>
+
       
       <div className="flex flex-col gap-4 mt-10">
         <div className="flex flex-col gap-2">

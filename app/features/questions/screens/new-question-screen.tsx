@@ -22,7 +22,15 @@ export default function NewQuestionScreen() {
   
 
   return (
+    <div>
+           <div className="flex flex-col h-40 gap-2 items-center justify-center">
+        <h1 className="text-3xl font-bold">새 질문 작성</h1>
+        <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
+          새 질문을 작성해보세요.
+        </span>
+      </div>
     <form  className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+       
       {/* 좌측: 폼 */}
       <div className="space-y-5">
         <Card>
@@ -171,5 +179,6 @@ export default function NewQuestionScreen() {
         </Card>
       </aside>
     </form>
+    </div>
   );
 }

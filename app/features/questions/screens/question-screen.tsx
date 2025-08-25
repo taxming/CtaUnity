@@ -59,7 +59,16 @@ export default function QuestionDetailScreen({  }) {
 
 
   return (
+    <div> 
+
+<div className="flex flex-col h-40 gap-2 items-center justify-center">
+        <h1 className="text-3xl font-bold">질문 상세</h1>
+        <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
+          질문 상세를 확인해보세요.
+        </span>
+      </div>
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+      
       {/* 메인 본문 */}
       <div className="space-y-6">
         <Card>
@@ -156,6 +165,7 @@ export default function QuestionDetailScreen({  }) {
           </CardContent>
         </Card>
       </aside>
+    </div>
     </div>
   );
 }
