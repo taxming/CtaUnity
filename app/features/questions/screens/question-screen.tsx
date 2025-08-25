@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router';
 
-export default function QuestionPage() {
+export default function QuestionScreen() {
   const { question_id } = useParams();
   const [answer, setAnswer] = useState('');
 

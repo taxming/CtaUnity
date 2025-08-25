@@ -2,19 +2,19 @@ import { type RouteConfig, index, layout, prefix, route } from "@react-router/de
 
 export default [
   layout("core/layouts/navigation.layout.tsx", [
-    index("common/pages/home-page.tsx"),
+    index("common/screens/home-screen.tsx"),
     ...prefix("questions", [
-      index("features/questions/pages/questions-page.tsx"),
-      route("new", "features/questions/pages/new-question-page.tsx"),
-      route("/:question_id", "features/questions/pages/question-page.tsx"),
-      route("/:question_id/edit", "features/questions/pages/edit-question-page.tsx"),
-      route("/:question_id/delete", "features/questions/pages/delete-question-page.tsx"),
+      index("features/questions/screens/questions-screen.tsx"),
+      route("new", "features/questions/screens/new-question-screen.tsx"),
+      route("/:question_id", "features/questions/screens/question-screen.tsx"),
+      route("/:question_id/edit", "features/questions/screens/edit-question-screen.tsx"),
+      route("/:question_id/delete", "features/questions/screens/delete-question-screen.tsx"),
     ]),
   ]),
   layout("core/layouts/legal.layout.tsx", [
     ...prefix("legal", [
-      route("/privacy-policy", "features/legal/pages/privacy-policy-page.tsx"),
-      route("/terms-of-service", "features/legal/pages/terms-of-service-page.tsx"),
+      route("/privacy-policy", "features/legal/screens/privacy-policy-screen.tsx"),
+      route("/terms-of-service", "features/legal/screens/terms-of-service-screen.tsx"),
     ]),
   ])
 ] satisfies RouteConfig;

@@ -1,8 +1,9 @@
-import { Welcome } from "~/welcome/welcome";
-import type { Route } from "./+types/home-page";
+
+import type { Route } from "./+types/home-screen";
 import { AnimatedGridPattern } from "~/core/components/magicui/animated-grid-pattern";
 import { cn } from "~/core/lib/utils";
 import { CardComponent } from "~/common/components/card-component";
+import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "~/core/components/ui/command";
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: "Home" }, { name: "description", content: "Home page" }];
@@ -35,6 +36,21 @@ export default function Home({loaderData}: Route.ComponentProps) {
           세무사로 성장할 수 있도록 돕습니다.
         </span>
       </div>
+
+  {/* 빠른 검색(Command) */}
+  <div className="mt-4 w-full mx-auto max-w-xl">
+        <Command className="rounded-xl border">
+          <CommandInput placeholder="예: 외항운송 영세율 / 상증 판례 2023두XXXX" />
+          <CommandList>
+            <CommandEmpty>검색어를 입력해 보세요.</CommandEmpty>
+            {/* 추천/최근 검색어가 있다면 <CommandItem>으로 바인딩 */}
+            <CommandItem>소득세법 · 거주자 판정</CommandItem>
+            <CommandItem>부가세 · 영세율 적용 요건</CommandItem>
+            <CommandItem>상속증여세 · 특례/판례</CommandItem>
+          </CommandList>
+        </Command>
+      </div>
+      
       <div className="flex flex-col gap-4 mt-10">
         <div className="flex flex-col gap-2">
           <h1 className="text-3xl font-bold">최근 질문</h1>

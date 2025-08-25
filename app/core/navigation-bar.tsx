@@ -1,5 +1,5 @@
 import { CogIcon, HomeIcon, LogOutIcon, MenuIcon } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { Button } from "~/core/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "~/core/components/ui/dropdown-menu";
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger } from "~/core/components/ui/sheet";
@@ -128,14 +128,21 @@ export function NavigationBar({
   }) {
     // Get translation function for internationalization
     const [messageState, setMessageState] = useState<string | null>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
+
     useEffect(() => {
       if (message) {
         setMessageState(message);
         setTimeout(() => {
           setMessageState(null);
+          // URL에서 message 파라미터 제거
+          const newSearchParams = new URLSearchParams(searchParams);
+          newSearchParams.delete("message");
+          setSearchParams(newSearchParams);
         }, 1000);
       }
-    }, [message]);
+    }, [message, searchParams, setSearchParams]);
+
     return (
       <>
       <nav
@@ -150,6 +157,7 @@ export function NavigationBar({
             <h1 className="text-lg text-muted-foreground">|</h1>
             <h1 className="text-lg font-extrabold">세무사 커뮤니티</h1> 
           </Link>
+          
           
           {/* Desktop navigation menu (hidden on mobile) */}
           <div className="hidden h-full items-center gap-5 md:flex">
@@ -177,15 +185,8 @@ export function NavigationBar({
             </Link>
             
             <Separator orientation="vertical" />
-            
-            {/* Settings, theme switcher, and language switcher */}
-            {/* <Actions /> */}
-            
-            <Separator orientation="vertical" />
-            
-            {/* Conditional rendering based on authentication state */}
+         
             {loading ? (
-              // Loading state with skeleton placeholder
               <div className="flex items-center">
                 <div className="bg-muted-foreground/20 size-8 animate-pulse rounded-lg" />
               </div>

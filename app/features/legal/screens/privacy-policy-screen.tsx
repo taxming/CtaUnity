@@ -1,5 +1,5 @@
 import React from "react";
-import type { Route } from "./+types/privacy-policy-page";
+import type { Route } from "./+types/privacy-policy-screen";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,7 +8,7 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function PrivacyPolicyPage() {
+export default function PrivacyPolicyScreen() {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-4">

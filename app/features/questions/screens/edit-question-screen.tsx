@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 
-export default function EditQuestionPage() {
+export default function EditQuestionScreen() {
   const { question_id } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
