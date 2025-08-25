@@ -1,4 +1,4 @@
-import { CogIcon, HomeIcon, LogOutIcon, MenuIcon } from "lucide-react";
+import { CogIcon, HomeIcon, LogOutIcon, MenuIcon, Terminal } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
 import { Button } from "~/core/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "~/core/components/ui/dropdown-menu";
@@ -7,6 +7,7 @@ import ThemeSwitcher from "./theme-switcher";
 import { Separator } from "~/core/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/core/components/ui/avatar";
 import { useEffect, useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 
 
 function Actions() {
@@ -54,12 +55,12 @@ function Actions() {
           </Link>
         </Button>
         
-        {/* Sign up button (more prominent) */}
-        <Button variant="default" asChild>
-          <Link to="/join" viewTransition>
-            Sign up
-          </Link>
-        </Button>
+                 {/* Sign up button (more prominent) */}
+         <Button variant="default" asChild>
+           <Link to="/register" viewTransition>
+             Sign up
+           </Link>
+         </Button>
       </>
     );
   }
@@ -252,12 +253,12 @@ export function NavigationBar({
         </div>
       </nav>
       {messageState && (
-        <div 
-          className="text-red-500 text-center max-w-screen-sm mx-auto fixed top-0 left-0 right-0 z-52 border h-16 flex items-center justify-center"
-          style={{animation: "fadeOut 1s forwards"}}
-        >
-          {messageState}
-        </div>
+        <Alert variant="default" className="text-red-500 text-center max-w-screen-sm mx-auto absolute top-30 left-0 right-0 z-52 border h-16 flex items-center justify-center">
+        <AlertTitle>경고! </AlertTitle>
+        <AlertDescription>
+           {message}
+        </AlertDescription>
+      </Alert>
       )}
       </>
     );

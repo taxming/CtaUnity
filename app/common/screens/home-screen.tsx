@@ -38,7 +38,7 @@ export default function Home({loaderData}: Route.ComponentProps) {
       </div>
 
   {/* 빠른 검색(Command) */}
-  <div className="mt-4 w-full mx-auto max-w-xl">
+  <div className="mt-4 w-full max-w-xl">
         <Command className="rounded-xl border">
           <CommandInput placeholder="예: 외항운송 영세율 / 상증 판례 2023두XXXX" />
           <CommandList>

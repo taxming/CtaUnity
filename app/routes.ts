@@ -16,5 +16,9 @@ export default [
       route("/privacy-policy", "features/legal/screens/privacy-policy-screen.tsx"),
       route("/terms-of-service", "features/legal/screens/terms-of-service-screen.tsx"),
     ]),
+  ]),
+  layout("features/auth/layouts/auth.layout.tsx", [
+    route("/login", "features/auth/screens/login-screen.tsx"),
+    route("/register", "features/auth/screens/register-screen.tsx"),
   ])
 ] satisfies RouteConfig;
