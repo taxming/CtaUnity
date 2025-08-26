@@ -11,6 +11,15 @@ export default [
       route("/:question_id/delete", "features/questions/screens/delete-question-screen.tsx"),
     ]),
     route("/contact", "features/contact/screens/contact-screen.tsx"),
+
+    ...prefix("law", [
+      route("/test", "features/law/screens/law-test.tsx"),
+      
+      route("/api/search", "features/law/api/law.search.ts"),
+      route("/api/:id", "features/law/api/law.$id.ts"),
+    ]),
+
+
   ]),
   layout("core/layouts/legal.layout.tsx", [
     ...prefix("legal", [

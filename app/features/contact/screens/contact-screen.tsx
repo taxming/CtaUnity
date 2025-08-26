@@ -13,6 +13,7 @@ import { Label } from "~/core/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "~/core/components/ui/select";
 import { Alert, AlertTitle, AlertDescription } from "~/core/components/ui/alert";
 import { Form } from "react-router";
+import Hero from "~/core/components/hero";
 
 
 
@@ -28,6 +29,8 @@ export default function ContactScreen({}: Route.ComponentProps) {
 
   return (
     <div className="mx-auto w-full max-w-screen-lg xl:max-w-screen-xl px-4 py-10">
+      <Hero title="Contact" subtitle="운영자 연락처 및 문의 페이지"/>
+
       <div className="mb-6">
         <h1 className="text-3xl font-bold">Contact</h1>
         <p className="text-sm text-muted-foreground">

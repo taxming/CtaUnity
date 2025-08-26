@@ -1,8 +1,8 @@
 
 
 import { Outlet, useLoaderData } from "react-router";
-import { NavigationBar } from "~/core/navigation-bar";
-import Footer from "../footer";
+import { NavigationBar } from "~/core/components/navigation-bar";
+import Footer from "../components/footer";
 import type { Route } from "./+types/navigation.layout";
 import { Toaster } from "sonner";
 

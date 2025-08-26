@@ -60,7 +60,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
     if (error.status === 404) {
-      return <Navigate to="/?message=페이지를 찾을 수 없습니다." replace />;
+
+      // return <Navigate to="/?message=페이지를 찾을 수 없습니다." replace />;
     }
     details =
       error.status === 404

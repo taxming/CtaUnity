@@ -10,16 +10,23 @@ import {
   CommandEmpty,
   CommandItem,
 } from "~/core/components/ui/command";
+import type { Route } from "./+types/questions-screen";
+import Hero from "~/core/components/hero";
+import { TAX_CATEGORIES } from "~/core/lib/constants";
+import { PlusIcon } from "lucide-react";
+
+
+export const meta: Route.MetaFunction = () => {
+  return [
+    { title: "질문목록 | CTAUNITY" },
+    { name: "description", content: "질문 목록을 확인해보세요." },
+  ];
+};
 
 export default function QuestionsPage() {
   return (
-    <div className="flex flex-col gap-4 mt-10">
-      <div className="flex flex-col h-40 gap-2 items-center justify-center">
-        <h1 className="text-3xl font-bold">질문</h1>
-        <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
-          질문 목록을 확인해보세요.
-        </span>
-      </div>
+    <div className="flex flex-col gap-4">
+      <Hero title="질문" subtitle="질문 목록을 확인해보세요."/>
 
       <div className="grid grid-cols-7 gap-12">
         <div className="col-span-5 flex flex-col gap-8">
@@ -54,7 +61,8 @@ export default function QuestionsPage() {
                 { text: "예규중심", variant: "secondary" },
                 { text: "실무사례", variant: "secondary" },
               ]}
-              isCompensation={true}              
+              isCompensation={true} 
+              className="max-w-full bg-primary/5"             
             />
           ))}
           </div>
@@ -79,14 +87,23 @@ export default function QuestionsPage() {
           <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-2">
               <Button variant="outline" className="w-full" asChild>
-                <Link to="/questions/new">새 글 작성</Link>
+                <Link to="/questions/new"><PlusIcon className="w-4 h-4" />새 글 작성</Link>
               </Button>
               <Separator className="w-full" />
             </div>
-            <h1 className="text-3xl font-bold">카테고리 목록</h1>
-            <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
-              카테고리 목록을 확인해보세요.
-            </span>
+            <h1 className="text-3xl font-bold">CATEGORIES</h1>
+            {TAX_CATEGORIES.map((category) => (
+              <div key={category.id} className="flex flex-col gap-2">
+                <Button variant="link" className="w-full" asChild>
+                  <Link to={`/questions/category/${category.id}`}>{category.name}</Link>
+                </Button>
+                <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
+                  {category.laws.join(", ")}
+                </span>
+                <Separator className="w-full" />
+
+              </div>
+            ))}
           </div>
         </aside>
       </div>
