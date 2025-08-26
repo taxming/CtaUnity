@@ -17,7 +17,7 @@ export default function NavigationLayout({loaderData}: Route.ComponentProps) {
   return (
     <div>
         <div>   
-            <NavigationBar name="" email="" avatarUrl="" loading={false} message={message} />
+            <NavigationBar name="test" email="test@test.com" avatarUrl="https://github.com/shadcn.png" loading={false} message={message} />
         </div>
         <div className=" min-h-screen max-w-screen-2xl mx-auto pt-16">
         <Outlet />

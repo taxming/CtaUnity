@@ -21,7 +21,7 @@ export default [
 
 
   ]),
-  layout("core/layouts/legal.layout.tsx", [
+  layout("features/legal/layouts/legal.layout.tsx", [
     ...prefix("legal", [
       route("/privacy-policy", "features/legal/screens/privacy-policy-screen.tsx"),
       route("/terms-of-service", "features/legal/screens/terms-of-service-screen.tsx"),
@@ -30,5 +30,11 @@ export default [
   layout("features/auth/layouts/auth.layout.tsx", [
     route("/login", "features/auth/screens/login-screen.tsx"),
     route("/register", "features/auth/screens/register-screen.tsx"),
-  ])
+  ]),
+
+  layout("features/dashboard/layouts/dashboard.layout.tsx", [
+    ...prefix("/dashboard", [
+      index("features/dashboard/screens/dashboard-screen.tsx"),
+    ]),
+  ]),
 ] satisfies RouteConfig;

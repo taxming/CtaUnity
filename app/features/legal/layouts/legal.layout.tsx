@@ -1,6 +1,6 @@
 import { Link, Outlet, useLoaderData } from "react-router";
 import { ChevronsRightIcon } from "lucide-react";
-import Footer from "../components/footer";
+import Footer from "~/core/components/footer";
 import type { Route } from "./+types/legal.layout";
 
 function LegalNav({ pathname }: { pathname: string }) {
