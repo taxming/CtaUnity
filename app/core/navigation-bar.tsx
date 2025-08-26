@@ -6,9 +6,9 @@ import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTrigger
 import ThemeSwitcher from "./theme-switcher";
 import { Separator } from "~/core/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/core/components/ui/avatar";
-import { useEffect, useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
-
+import { useEffect, useRef } from "react";
+import { toast } from "sonner";
+import { DateTime } from "luxon";
 
 function Actions() {
     return (
@@ -128,21 +128,29 @@ export function NavigationBar({
     message?: string;
   }) {
     // Get translation function for internationalization
-    const [messageState, setMessageState] = useState<string | null>(null);
     const [searchParams, setSearchParams] = useSearchParams();
 
+    
+    const shownRef = useRef(false);
+    
     useEffect(() => {
-      if (message) {
-        setMessageState(message);
-        setTimeout(() => {
-          setMessageState(null);
-          // URL에서 message 파라미터 제거
-          const newSearchParams = new URLSearchParams(searchParams);
-          newSearchParams.delete("message");
-          setSearchParams(newSearchParams);
-        }, 1000);
-      }
-    }, [message, searchParams, setSearchParams]);
+      if (!message || shownRef.current) return;
+    
+      toast(message, {
+        description: DateTime.now().toLocaleString(DateTime.DATETIME_MED),
+        action: { label: "Undo", onClick: () => console.log("Undo") },
+      });
+    
+      shownRef.current = true;
+    
+      // URL 파라미터는 effect 재실행 유발하지 않게 처리
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("message");
+        return next;
+      }, { replace: true });
+    }, [message, setSearchParams]);
+    
 
     return (
       <>
@@ -252,14 +260,6 @@ export function NavigationBar({
           </Sheet>
         </div>
       </nav>
-      {messageState && (
-        <Alert variant="default" className="text-red-500 text-center max-w-screen-sm mx-auto absolute top-30 left-0 right-0 z-52 border h-16 flex items-center justify-center">
-        <AlertTitle>경고! </AlertTitle>
-        <AlertDescription>
-           {message}
-        </AlertDescription>
-      </Alert>
-      )}
       </>
     );
   }

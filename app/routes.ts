@@ -10,6 +10,7 @@ export default [
       route("/:question_id/edit", "features/questions/screens/edit-question-screen.tsx"),
       route("/:question_id/delete", "features/questions/screens/delete-question-screen.tsx"),
     ]),
+    route("/contact", "features/contact/screens/contact-screen.tsx"),
   ]),
   layout("core/layouts/legal.layout.tsx", [
     ...prefix("legal", [

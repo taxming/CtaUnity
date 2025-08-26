@@ -4,6 +4,7 @@ import { Badge } from "~/core/components/ui/badge";
 import { Button } from "~/core/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/core/components/ui/card";
 import { EyeIcon, MessageCircleIcon } from "lucide-react";
+import { BorderBeam } from "~/core/components/magicui/border-beam";
 
 interface CardComponentProps {
   avatarSrc?: string;
@@ -19,6 +20,7 @@ interface CardComponentProps {
   showMessageButton?: boolean;
   messageButtonLink?: string;
   className?: string;
+  isCompensation?: boolean;
 }
 
 export function CardComponent({
@@ -32,24 +34,36 @@ export function CardComponent({
   showMessageButton = true,
   messageButtonLink = "/",
   className = "",
+  isCompensation = false,
 }: CardComponentProps) {
   return (
-    <Card className={`max-w-screen-lg space-y-2 ${className}`}>
+    <Card className={`relative max-w-screen-lg space-y-2 ${className}`}>
       <CardHeader className="space-y-2">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-between">
+          <div className="flex flex-row items-center gap-2">
           <Avatar>
             <AvatarImage src={avatarSrc} />
             <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
           <span>{username}</span>
           <span>{date}</span>
+          </div>
+          {isCompensation && (
+          <div className="flex items-center gap-2">
+            <Badge variant="destructive">보상형 질문</Badge>
+            <Badge variant="secondary">50,000원</Badge>
+
+          </div>
+        )}
         </div>
+      
         <CardTitle>
           <h1>{title}</h1>
         </CardTitle>
         <CardDescription>
           <p>{description}</p>
         </CardDescription>
+       
       </CardHeader>
       <CardContent className="flex flex-row justify-between items-center">
         <div className="flex gap-2">
@@ -74,6 +88,10 @@ export function CardComponent({
           </div>
         )}
       </CardContent>
+      {isCompensation && (
+              <BorderBeam duration={8} size={100} />
+
+      )}
     </Card>
   );
 }

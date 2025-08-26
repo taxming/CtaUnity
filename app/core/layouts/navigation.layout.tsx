@@ -4,6 +4,7 @@ import { Outlet, useLoaderData } from "react-router";
 import { NavigationBar } from "~/core/navigation-bar";
 import Footer from "../footer";
 import type { Route } from "./+types/navigation.layout";
+import { Toaster } from "sonner";
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
@@ -15,7 +16,6 @@ export default function NavigationLayout({loaderData}: Route.ComponentProps) {
   const { message } = loaderData as { message: string };
   return (
     <div>
-      
         <div>   
             <NavigationBar name="" email="" avatarUrl="" loading={false} message={message} />
         </div>

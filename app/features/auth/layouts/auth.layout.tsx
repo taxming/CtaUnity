@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 export default function AuthLayout() {
   return (
       <main className="grid grid-cols-2 min-h-screen">
-      <div className="relative h-full w-full overflow-hidden rounded-lg border bg-background">
+      <div className="relative h-full w-full overflow-hidden bg-background">
       <FlickeringGrid
         className="absolute inset-0 z-0 size-full"
         squareSize={4}
@@ -12,8 +12,8 @@ export default function AuthLayout() {
         color="rgb(255, 120, 0)"
         maxOpacity={0.5}
         flickerChance={0.1}
-        width={1000}
-        height={1000}
+        width={window.innerWidth}
+        height={window.innerHeight}
       />
     </div>
         <div className="col-span-1 min-h-full">

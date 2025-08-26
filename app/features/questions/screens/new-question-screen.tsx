@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "~/core/components/ui/c
 import { Separator } from "~/core/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "~/core/components/ui/alert";
 import { z } from "zod";
+import { Form } from "react-router";
 
 
 const schema = z.object({
@@ -29,7 +30,7 @@ export default function NewQuestionScreen() {
           새 질문을 작성해보세요.
         </span>
       </div>
-    <form  className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+    <Form  className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
        
       {/* 좌측: 폼 */}
       <div className="space-y-5">
@@ -178,7 +179,7 @@ export default function NewQuestionScreen() {
           </CardContent>
         </Card>
       </aside>
-    </form>
+    </Form>
     </div>
   );
 }
