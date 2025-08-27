@@ -17,6 +17,7 @@ export default [
       
       route("/api/search", "features/law/api/law.search.ts"),
       route("/api/:id", "features/law/api/law.$id.ts"),
+      route("/api/:id/content", "features/law/api/law.$id.content.ts"),
     ]),
 
 
