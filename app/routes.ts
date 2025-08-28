@@ -16,14 +16,16 @@ export default [
       route("/test", "features/law/screens/law-test.tsx"),
       route("/quick-law", "features/law/screens/quick-law-screen.tsx"),
       route("/quick-law/api", "features/law/api/law.quick.ts"),
-      
+
       route("/api/search", "features/law/api/law.search.ts"),
       route("/api/:id", "features/law/api/law.$id.ts"),
       route("/api/:id/content", "features/law/api/law.$id.content.ts"),
     ]),
 
     ...prefix("caselaw", [
-      index("features/caselaw/screens/caselaw-screen.tsx"),
+      index("features/caselaw/screens/caselaws-screen.tsx"),
+      route("/:caselaw_id", "features/caselaw/screens/caselaw-screen.tsx"),
+      route("/:caselaw_id/new", "features/caselaw/screens/new-caselaw-screen.tsx"),
     ]),
     ...prefix("forum", [
       index("features/forum/screens/forums-screen.tsx"),

@@ -25,8 +25,11 @@ import {
   Flag,
   MoreHorizontal,
   Reply,
-  Heart
+  Heart,
+  Plus,
+  User
 } from "lucide-react";
+import Hero from "~/core/components/hero";
 
 // 게시글 타입 정의
 interface ForumPost {
@@ -273,7 +276,8 @@ export default function ForumScreen() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="flex flex-col gap-10">
+      <Hero title="자유토론방" subtitle="자유롭게 의견을 나누는 공간입니다" />
       {/* 헤더 */}
       <div className="flex items-center gap-4 mb-6">
         <Button variant="ghost" size="sm" onClick={() => navigate("/forum")}>
@@ -290,314 +294,393 @@ export default function ForumScreen() {
         </div>
       </div>
 
-      {/* 게시글 내용 */}
-      <Card className="mb-6">
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                {post.isPinned && (
-                  <Badge variant="destructive" className="text-xs">
-                    공지
-                  </Badge>
-                )}
-                {post.isClosed && (
-                  <Badge variant="secondary" className="text-xs">
-                    마감
-                  </Badge>
-                )}
-                <Badge variant="outline" className="text-xs">
-                  {post.category}
-                </Badge>
-              </div>
-              
-              <CardTitle className="text-2xl mb-3">
-                {post.title}
-              </CardTitle>
-              
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={post.author.avatar} />
-                    <AvatarFallback className="text-sm">
-                      {post.author.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="font-medium">{post.author.name}</span>
-                  <Badge variant="secondary" className="text-xs">
-                    {post.author.role}
-                  </Badge>
-                </div>
-                
-                <div className="flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  {formatDate(post.createdAt)}
-                </div>
-
-                {post.updatedAt && post.updatedAt !== post.createdAt && (
-                  <span className="text-xs">(수정됨)</span>
-                )}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
-                <Share2 className="w-4 h-4 mr-2" />
-                공유
-              </Button>
-              <Button variant="outline" size="sm">
-                <Flag className="w-4 h-4 mr-2" />
-                신고
-              </Button>
-              <Button variant="outline" size="sm">
-                <MoreHorizontal className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-
-        <CardContent>
+      {/* 그리드 레이아웃 */}
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
+        {/* 메인 콘텐츠 영역 (좌측 4개) */}
+        <div className="lg:col-span-4 space-y-6">
           {/* 게시글 내용 */}
-          <div className="prose prose-sm max-w-none mb-6">
-            <div className="whitespace-pre-wrap text-foreground">
-              {post.content}
-            </div>
-          </div>
-
-          {/* 태그 */}
-          {post.tags.length > 0 && (
-            <div className="flex gap-2 mb-6">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="outline" className="text-xs">
-                  #{tag}
-                </Badge>
-              ))}
-            </div>
-          )}
-
-          {/* 게시글 액션 */}
-          <div className="flex items-center justify-between pt-4 border-t">
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Eye className="w-4 h-4" />
-                조회 {post.viewCount}
-              </div>
-              <div className="flex items-center gap-1">
-                <MessageCircle className="w-4 h-4" />
-                댓글 {post.replyCount}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant={post.isLiked ? "default" : "outline"}
-                size="sm"
-                onClick={toggleLike}
-              >
-                <Heart className={`w-4 h-4 mr-2 ${post.isLiked ? "fill-current" : ""}`} />
-                좋아요 {post.likeCount}
-              </Button>
-
-              {/* 작성자만 수정/삭제 가능 */}
-              {post.author.name === "현재사용자" && (
-                <>
-                  <Button variant="outline" size="sm">
-                    <Edit className="w-4 h-4 mr-2" />
-                    수정
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={handleDelete}>
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    삭제
-                  </Button>
-                </>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* 댓글 작성 */}
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-lg">댓글 작성</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleCommentSubmit}>
-            <div className="space-y-3">
-              <Textarea
-                placeholder="댓글을 입력하세요..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                className="min-h-[100px] resize-none"
-                maxLength={1000}
-              />
-              <div className="flex justify-between items-center">
-                <div className="text-xs text-muted-foreground">
-                  {newComment.length}/1000
-                </div>
-                <Button type="submit" disabled={isSubmitting || !newComment.trim()}>
-                  {isSubmitting ? "작성 중..." : "댓글 작성"}
-                </Button>
-              </div>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-
-      {/* 댓글 목록 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">
-            댓글 {comments.length}개
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {comments.map((comment) => (
-              <div key={comment.id} className="border-b border-border pb-4 last:border-b-0">
-                {/* 댓글 내용 */}
-                <div className="flex gap-3">
-                  <Avatar className="w-8 h-8 flex-shrink-0">
-                    <AvatarImage src={comment.author.avatar} />
-                    <AvatarFallback className="text-sm">
-                      {comment.author.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium text-sm">{comment.author.name}</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {comment.author.role}
+          <Card>
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    {post.isPinned && (
+                      <Badge variant="destructive" className="text-xs">
+                        공지
                       </Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {formatDate(comment.createdAt)}
-                      </span>
-                    </div>
-                    
-                    <div className="text-sm text-foreground mb-3">
-                      {comment.content}
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleCommentLike(comment.id)}
-                        className="h-auto p-1 text-xs"
-                      >
-                        <Heart className={`w-3 h-3 mr-1 ${comment.isLiked ? "fill-current text-red-500" : ""}`} />
-                        {comment.likeCount}
-                      </Button>
-                      
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
-                        className="h-auto p-1 text-xs"
-                      >
-                        <Reply className="w-3 h-3 mr-1" />
-                        답글
-                      </Button>
-                    </div>
-
-                    {/* 답글 작성 폼 */}
-                    {replyTo === comment.id && (
-                      <div className="mt-3 ml-4 border-l-2 border-border pl-4">
-                        <form onSubmit={handleReplySubmit}>
-                          <div className="space-y-2">
-                            <Textarea
-                              placeholder="답글을 입력하세요..."
-                              value={replyContent}
-                              onChange={(e) => setReplyContent(e.target.value)}
-                              className="min-h-[80px] resize-none text-sm"
-                              maxLength={500}
-                            />
-                            <div className="flex justify-between items-center">
-                              <div className="text-xs text-muted-foreground">
-                                {replyContent.length}/500
-                              </div>
-                              <div className="flex gap-2">
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    setReplyTo(null);
-                                    setReplyContent("");
-                                  }}
-                                >
-                                  취소
-                                </Button>
-                                <Button
-                                  type="submit"
-                                  size="sm"
-                                  disabled={isSubmitting || !replyContent.trim()}
-                                >
-                                  {isSubmitting ? "작성 중..." : "답글 작성"}
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
                     )}
+                    {post.isClosed && (
+                      <Badge variant="secondary" className="text-xs">
+                        마감
+                      </Badge>
+                    )}
+                    <Badge variant="outline" className="text-xs">
+                      {post.category}
+                    </Badge>
+                  </div>
+                  
+                  <CardTitle className="text-2xl mb-3">
+                    {post.title}
+                  </CardTitle>
+                  
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage src={post.author.avatar} />
+                        <AvatarFallback className="text-sm">
+                          {post.author.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="font-medium">{post.author.name}</span>
+                      <Badge variant="secondary" className="text-xs">
+                        {post.author.role}
+                      </Badge>
+                    </div>
+                    
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      {formatDate(post.createdAt)}
+                    </div>
 
-                    {/* 답글 목록 */}
-                    {comment.replies && comment.replies.length > 0 && (
-                      <div className="mt-3 ml-4 border-l-2 border-border pl-4 space-y-3">
-                        {comment.replies.map((reply) => (
-                          <div key={reply.id} className="flex gap-2">
-                            <Avatar className="w-6 h-6 flex-shrink-0">
-                              <AvatarImage src={reply.author.avatar} />
-                              <AvatarFallback className="text-xs">
-                                {reply.author.name.charAt(0)}
-                              </AvatarFallback>
-                            </Avatar>
-                            
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <span className="font-medium text-xs">{reply.author.name}</span>
-                                <Badge variant="secondary" className="text-xs">
-                                  {reply.author.role}
-                                </Badge>
-                                <span className="text-xs text-muted-foreground">
-                                  {formatDate(reply.createdAt)}
-                                </span>
-                              </div>
-                              
-                              <div className="text-xs text-foreground mb-2">
-                                {reply.content}
-                              </div>
-                              
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => toggleCommentLike(reply.id)}
-                                className="h-auto p-1 text-xs"
-                              >
-                                <Heart className={`w-3 h-3 mr-1 ${reply.isLiked ? "fill-current text-red-500" : ""}`} />
-                                {reply.likeCount}
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                    {post.updatedAt && post.updatedAt !== post.createdAt && (
+                      <span className="text-xs">(수정됨)</span>
                     )}
                   </div>
                 </div>
-              </div>
-            ))}
 
-            {/* 댓글이 없을 때 */}
-            {comments.length === 0 && (
-              <div className="text-center py-8 text-muted-foreground">
-                아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm">
+                    <Share2 className="w-4 h-4 mr-2" />
+                    공유
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Flag className="w-4 h-4 mr-2" />
+                    신고
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <MoreHorizontal className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+            </CardHeader>
+
+            <CardContent>
+              {/* 게시글 내용 */}
+              <div className="prose prose-sm max-w-none mb-6">
+                <div className="whitespace-pre-wrap text-foreground">
+                  {post.content}
+                </div>
+              </div>
+
+              {/* 태그 */}
+              {post.tags.length > 0 && (
+                <div className="flex gap-2 mb-6">
+                  {post.tags.map((tag) => (
+                    <Badge key={tag} variant="outline" className="text-xs">
+                      #{tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+
+              {/* 게시글 액션 */}
+              <div className="flex items-center justify-between pt-4 border-t">
+                <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Eye className="w-4 h-4" />
+                    조회 {post.viewCount}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <MessageCircle className="w-4 h-4" />
+                    댓글 {post.replyCount}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant={post.isLiked ? "default" : "outline"}
+                    size="sm"
+                    onClick={toggleLike}
+                  >
+                    <Heart className={`w-4 h-4 mr-2 ${post.isLiked ? "fill-current" : ""}`} />
+                    좋아요 {post.likeCount}
+                  </Button>
+
+                  {/* 작성자만 수정/삭제 가능 */}
+                  {post.author.name === "현재사용자" && (
+                    <>
+                      <Button variant="outline" size="sm">
+                        <Edit className="w-4 h-4 mr-2" />
+                        수정
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={handleDelete}>
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        삭제
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 댓글 작성 */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">댓글 작성</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleCommentSubmit}>
+                <div className="space-y-3">
+                  <Textarea
+                    placeholder="댓글을 입력하세요..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    className="min-h-[100px] resize-none"
+                    maxLength={1000}
+                  />
+                  <div className="flex justify-between items-center">
+                    <div className="text-xs text-muted-foreground">
+                      {newComment.length}/1000
+                    </div>
+                    <Button type="submit" disabled={isSubmitting || !newComment.trim()}>
+                      {isSubmitting ? "작성 중..." : "댓글 작성"}
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* 댓글 목록 */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">
+                댓글 {comments.length}개
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {comments.map((comment) => (
+                  <div key={comment.id} className="border-b border-border pb-4 last:border-b-0">
+                    {/* 댓글 내용 */}
+                    <div className="flex gap-3">
+                      <Avatar className="w-8 h-8 flex-shrink-0">
+                        <AvatarImage src={comment.author.avatar} />
+                        <AvatarFallback className="text-sm">
+                          {comment.author.name.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="font-medium text-sm">{comment.author.name}</span>
+                          <Badge variant="secondary" className="text-xs">
+                            {comment.author.role}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {formatDate(comment.createdAt)}
+                          </span>
+                        </div>
+                        
+                        <div className="text-sm text-foreground mb-3">
+                          {comment.content}
+                        </div>
+                        
+                        <div className="flex items-center gap-3">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleCommentLike(comment.id)}
+                            className="h-auto p-1 text-xs"
+                          >
+                            <Heart className={`w-3 h-3 mr-1 ${comment.isLiked ? "fill-current text-red-500" : ""}`} />
+                            {comment.likeCount}
+                          </Button>
+                          
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
+                            className="h-auto p-1 text-xs"
+                          >
+                            <Reply className="w-3 h-3 mr-1" />
+                            답글
+                          </Button>
+                        </div>
+
+                        {/* 답글 작성 폼 */}
+                        {replyTo === comment.id && (
+                          <div className="mt-3 ml-4 border-l-2 border-border pl-4">
+                            <form onSubmit={handleReplySubmit}>
+                              <div className="space-y-2">
+                                <Textarea
+                                  placeholder="답글을 입력하세요..."
+                                  value={replyContent}
+                                  onChange={(e) => setReplyContent(e.target.value)}
+                                  className="min-h-[80px] resize-none text-sm"
+                                  maxLength={500}
+                                />
+                                <div className="flex justify-between items-center">
+                                  <div className="text-xs text-muted-foreground">
+                                    {replyContent.length}/500
+                                  </div>
+                                  <div className="flex gap-2">
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => {
+                                        setReplyTo(null);
+                                        setReplyContent("");
+                                      }}
+                                    >
+                                      취소
+                                    </Button>
+                                    <Button
+                                      type="submit"
+                                      size="sm"
+                                      disabled={isSubmitting || !replyContent.trim()}
+                                    >
+                                      {isSubmitting ? "작성 중..." : "답글 작성"}
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        )}
+
+                        {/* 답글 목록 */}
+                        {comment.replies && comment.replies.length > 0 && (
+                          <div className="mt-3 ml-4 border-l-2 border-border pl-4 space-y-3">
+                            {comment.replies.map((reply) => (
+                              <div key={reply.id} className="flex gap-2">
+                                <Avatar className="w-6 h-6 flex-shrink-0">
+                                  <AvatarImage src={reply.author.avatar} />
+                                  <AvatarFallback className="text-xs">
+                                    {reply.author.name.charAt(0)}
+                                  </AvatarFallback>
+                                </Avatar>
+                                
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <span className="font-medium text-xs">{reply.author.name}</span>
+                                    <Badge variant="secondary" className="text-xs">
+                                      {reply.author.role}
+                                    </Badge>
+                                    <span className="text-xs text-muted-foreground">
+                                      {formatDate(reply.createdAt)}
+                                    </span>
+                                  </div>
+                                  
+                                  <div className="text-xs text-foreground mb-2">
+                                    {reply.content}
+                                  </div>
+                                  
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => toggleCommentLike(reply.id)}
+                                    className="h-auto p-1 text-xs"
+                                  >
+                                    <Heart className={`w-3 h-3 mr-1 ${reply.isLiked ? "fill-current text-red-500" : ""}`} />
+                                    {reply.likeCount}
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* 댓글이 없을 때 */}
+                {comments.length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">
+                    아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* 사이드바 영역 (우측 2개) */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* 작성자 정보 */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">작성자 정보</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-3">
+                <Avatar className="w-16 h-16">
+                  <AvatarImage src={post.author.avatar} />
+                  <AvatarFallback className="text-lg">
+                    {post.author.name.charAt(0)}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="font-semibold">{post.author.name}</h3>
+                  <Badge variant="secondary">{post.author.role}</Badge>
+                </div>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                <p>가입일: {formatDate(post.createdAt)}</p>
+                <p>게시글: {post.viewCount}개</p>
+              </div>
+            </CardContent>
+          </Card>
+
+     
+
+          {/* 인기 태그 */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">인기 태그</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <Badge key={tag} variant="outline" className="text-xs">
+                    #{tag}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 빠른 링크 */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">빠른 링크</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                <Link to="/forum">
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  게시판 목록
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                <Link to="/forum/new">
+                  <Plus className="w-4 h-4 mr-2" />
+                  새 글 작성
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" className="w-full justify-start" asChild>
+                <Link to="/questions">
+                  <User className="w-4 h-4 mr-2" />
+                  Q&A 게시판
+                </Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

@@ -109,7 +109,7 @@ export default function QuestionsPage() {
             {TAX_CATEGORIES.map((category) => (
               <div key={category.id} className="flex flex-col gap-2">
                 <Button variant="link" className="w-full" asChild>
-                  <Link to={`/questions/category/${category.id}`}>{category.name}</Link>
+                  <Link to={`/questions?category=${category.id}`}>{category.name}</Link>
                 </Button>
                 <span className="text-sm text-muted-foreground block whitespace-pre-wrap">
                   {category.laws.join(", ")}

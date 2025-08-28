@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "~/core/components/ui/c
 import { Button } from "~/core/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "~/core/components/ui/avatar";
 import { Alert, AlertTitle, AlertDescription } from "~/core/components/ui/alert";
-
+import { Input } from "~/core/components/ui/input";
 
 
 export default function QuestionDetailScreen({  }) {
@@ -116,9 +116,12 @@ export default function QuestionDetailScreen({  }) {
         </Card>
 
         {/* 답변 영역 */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-start justify-between">
           <h2 className="text-xl font-bold">답변</h2>
+          <div className="block w-full space-y-2">
+          <Input type="textarea" placeholder="답변을 입력해주세요." className="w-full min-h-[150px]" />
           <Button>답변 작성하기</Button>
+          </div>
         </div>
         <div className="space-y-4">
           {question.answers.map(ans => (
