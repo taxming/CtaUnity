@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import { CardComponent } from "~/common/components/card-component";
+import { CardComponent } from "~/features/common/components/card-component";
 import { Button } from "~/core/components/ui/button";
 import { Separator } from "~/core/components/ui/separator";
 import {

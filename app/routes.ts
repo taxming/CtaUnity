@@ -2,7 +2,7 @@ import { type RouteConfig, index, layout, prefix, route } from "@react-router/de
 
 export default [
   layout("core/layouts/navigation.layout.tsx", [
-    index("common/screens/home-screen.tsx"),
+    index("features/common/screens/home-screen.tsx"),
     ...prefix("questions", [
       index("features/questions/screens/questions-screen.tsx"),
       route("new", "features/questions/screens/new-question-screen.tsx"),
@@ -14,12 +14,21 @@ export default [
 
     ...prefix("law", [
       route("/test", "features/law/screens/law-test.tsx"),
+      route("/quick-law", "features/law/screens/quick-law-screen.tsx"),
       
       route("/api/search", "features/law/api/law.search.ts"),
       route("/api/:id", "features/law/api/law.$id.ts"),
       route("/api/:id/content", "features/law/api/law.$id.content.ts"),
     ]),
 
+    ...prefix("caselaw", [
+      index("features/caselaw/screens/caselaw-screen.tsx"),
+    ]),
+    ...prefix("forum", [
+      index("features/forum/screens/forums-screen.tsx"),
+      route("/new", "features/forum/screens/new-forum-screen.tsx"),
+      route("/:forum_id", "features/forum/screens/forum-screen.tsx"),
+    ]),
 
   ]),
   layout("features/legal/layouts/legal.layout.tsx", [
