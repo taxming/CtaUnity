@@ -1,69 +1,45 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Form, Link, useNavigate } from "react-router";
 import { Button } from "~/core/components/ui/button";
 import { Input } from "~/core/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/core/components/ui/card";
 import { Label } from "~/core/components/ui/label";
 import { GithubIcon, MessageCircleIcon } from "lucide-react";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "~/core/components/ui/breadcrumb";
+import type { Route } from "./+types/register-screen";
+import { json, z } from "zod";
 
-export default function RegisterScreen() {
-  const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
+
+export const meta: Route.MetaFunction = () => {
+  return [{ title: "회원가입 | CTAUNITY" }];
+};
+
+const registerSchema = z.object({
+  name: z.string().min(2, {message: "두글자 이상 입력해주세요"}),
+  email: z.email({message: "올바른 이메일 형식을 입력해주세요"}),
+  password: z.string().min(8, {message: "비밀번호는 8자 이상이어야 합니다"}),
+  confirmPassword: z.string().min(8, {message: "비밀번호는 8자 이상이어야 합니다"}),
+  taxNumber: z.number({message: "숫자만 입력 가능합니다"}).min(3, {message: "너무 짧습니다"}),
+});
+
+export const action = async ({ request }: Route.ActionArgs) => {
+  const formData = await request.formData();
+
+  const {error:TypeError, data: parsedData} = await registerSchema.safeParseAsync(Object.fromEntries(formData));
+  console.log("TypeError", TypeError?.flatten().fieldErrors);
+  console.log("parsedData", parsedData);
+
+  if (TypeError) {
+    return { error: TypeError.flatten().fieldErrors };
+  }
+
+  return null;
+};
+
+
+export default function RegisterScreen({loaderData, actionData} : Route.ComponentProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!name.trim()) {
-      newErrors.name = "이름을 입력해주세요";
-    }
-
-    if (!email.trim()) {
-      newErrors.email = "이메일을 입력해주세요";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "올바른 이메일 형식을 입력해주세요";
-    }
-
-    if (password.length < 8) {
-      newErrors.password = "비밀번호는 8자 이상이어야 합니다";
-    }
-
-    if (password !== confirmPassword) {
-      newErrors.confirmPassword = "비밀번호가 일치하지 않습니다";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      // 실제 구현에서는 API 호출로 회원가입 처리
-      await new Promise(resolve => setTimeout(resolve, 1000)); // 회원가입 시뮬레이션
-      
-      console.log("회원가입 시도:", { name, email, password });
-      
-      // 회원가입 성공 시 로그인 페이지로 이동
-      navigate("/login?message=회원가입이 완료되었습니다. 로그인해주세요.");
-    } catch (error) {
-      console.error("회원가입 실패:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
@@ -97,20 +73,19 @@ export default function RegisterScreen() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <Form method="post" className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">이름</Label>
               <Input
                 id="name"
                 type="text"
                 placeholder="홍길동"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                name="name"
                 required
                 disabled={isLoading}
               />
-              {errors.name && (
-                <p className="text-sm text-red-500">{errors.name}</p>
+              {actionData?.error?.name && (
+                <p className="text-sm text-red-500">{actionData.error.name}</p>
               )}
             </div>
             
@@ -120,13 +95,12 @@ export default function RegisterScreen() {
                 id="email"
                 type="email"
                 placeholder="example@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 required
                 disabled={isLoading}
               />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email}</p>
+              {actionData?.error?.email && (
+                <p className="text-sm text-red-500">{actionData.error.email}</p>
               )}
             </div>
             
@@ -136,13 +110,12 @@ export default function RegisterScreen() {
                 id="password"
                 type="password"
                 placeholder="8자 이상 입력하세요"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
                 required
                 disabled={isLoading}
               />
-              {errors.password && (
-                <p className="text-sm text-red-500">{errors.password}</p>
+              {actionData?.error?.password && (
+                <p className="text-sm text-red-500">{actionData.error.password}</p>
               )}
             </div>
             
@@ -152,13 +125,27 @@ export default function RegisterScreen() {
                 id="confirmPassword"
                 type="password"
                 placeholder="비밀번호를 다시 입력하세요"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                name="confirmPassword"
                 required
                 disabled={isLoading}
               />
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500">{errors.confirmPassword}</p>
+              {actionData?.error?.confirmPassword && (
+                <p className="text-sm text-red-500">{actionData.error.confirmPassword}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">세무사등록번호</Label>
+              <Input
+                id="taxNumber"
+                type="text"
+                placeholder="세무사등록번호를 입력하세요"
+                name="taxNumber"
+                required
+                disabled={isLoading}
+              />
+              {actionData?.error?.taxNumber && (
+                <p className="text-sm text-red-500">{actionData.error.taxNumber}</p>
               )}
             </div>
             
@@ -169,7 +156,7 @@ export default function RegisterScreen() {
             >
               {isLoading ? "회원가입 중..." : "회원가입"}
             </Button>
-          </form>
+          </Form>
           
           <div className="mt-4 text-center text-sm">
             이미 계정이 있으신가요?{" "}

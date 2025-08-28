@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Form, Link, useNavigate } from "react-router";
 import { Button } from "~/core/components/ui/button";
 import { Input } from "~/core/components/ui/input";
 import {
@@ -21,37 +21,30 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "~/core/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "~/core/components/ui/dropdown-menu";
+import type { Route } from "./+types/login-screen";
+import { z } from "zod";
 
-export default function LoginScreen() {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export const meta: Route.MetaFunction = () => {
+  return [{ title: "로그인 | CTAUNITY" }];
+};
+
+const loginSchema = z.object({
+  email: z.email({message: "올바른 이메일 형식을 입력해주세요"}),
+  password: z.string().min(8, {message: "비밀번호는 8자 이상이어야 합니다"}),
+});
+
+export const action = async ({ request }: Route.ActionArgs) => {
+  const formData = await request.formData();
+  const {error:TypeError, data: parsedData} = await loginSchema.safeParseAsync(Object.fromEntries(formData));
+  if(TypeError) {
+    return { error: TypeError.flatten().fieldErrors };
+  }
+
+  return null;
+};
+
+export default function LoginScreen({loaderData, actionData} : Route.ComponentProps) {
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      // 실제 구현에서는 API 호출로 로그인 처리
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 로그인 시뮬레이션
-
-      console.log("로그인 시도:", { email, password });
-
-      // 로그인 성공 시 홈페이지로 이동
-      navigate("/?message=로그인되었습니다");
-    } catch (error) {
-      console.error("로그인 실패:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
@@ -84,18 +77,20 @@ export default function LoginScreen() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <Form method="post" className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">이메일</Label>
               <Input
                 id="email"
                 type="email"
                 placeholder="example@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 required
                 disabled={isLoading}
               />
+              {actionData?.error?.email && (
+                <p className="text-sm text-red-500">{actionData.error.email}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">비밀번호</Label>
@@ -103,16 +98,18 @@ export default function LoginScreen() {
                 id="password"
                 type="password"
                 placeholder="비밀번호를 입력하세요"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
                 required
                 disabled={isLoading}
               />
+              {actionData?.error?.password && (
+                <p className="text-sm text-red-500">{actionData.error.password}</p>
+              )}
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "로그인 중..." : "로그인"}
             </Button>
-          </form>
+          </Form>
 
           <div className="mt-4 text-center text-sm">
             계정이 없으신가요?{" "}
