@@ -14,6 +14,7 @@ import type { Route } from "./+types/questions-screen";
 import Hero from "~/core/components/hero";
 import { TAX_CATEGORIES } from "~/core/lib/constants";
 import { PlusIcon } from "lucide-react";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "~/core/components/ui/pagination";
 
 
 export const meta: Route.MetaFunction = () => {
@@ -81,6 +82,19 @@ export default function QuestionsPage() {
             />
           ))}
           </div>
+          <Pagination >
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationLink>1</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink>2</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink>3</PaginationLink>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
 
         <aside className="col-span-2 mt-28">

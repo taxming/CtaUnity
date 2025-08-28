@@ -573,7 +573,7 @@ export default function LawTestTextScreen({}: Route.ComponentProps) {
 
                 {/* 상세 조문 내용 Dialog */}
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                  <DialogContent className="w-screen max-h-[80vh] sm:max-w-[60vw] overflow-y-auto">
+                  <DialogContent className="w-screen max-h-[80vh] sm:max-w-[50vw] overflow-y-auto">
                     {selectedArticleData && (
                       <>
                         <DialogHeader>

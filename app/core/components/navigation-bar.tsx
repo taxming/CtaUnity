@@ -268,7 +268,13 @@ export function NavigationBar({
           {/* Desktop navigation menu (hidden on mobile) */}
           <div className="hidden h-full items-center gap-5 md:flex">
             {/* Main navigation links */}
-
+            <Link
+              to="/law/quick-law"
+              viewTransition
+              className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            >
+              Quick Law
+            </Link>
             <Link
               to="/law/test"
               viewTransition

@@ -15,6 +15,7 @@ export default [
     ...prefix("law", [
       route("/test", "features/law/screens/law-test.tsx"),
       route("/quick-law", "features/law/screens/quick-law-screen.tsx"),
+      route("/quick-law/api", "features/law/api/law.quick.ts"),
       
       route("/api/search", "features/law/api/law.search.ts"),
       route("/api/:id", "features/law/api/law.$id.ts"),
